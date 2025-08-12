@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>剪刀石頭布 - 線上對戰</title>
+</head>
+<body>
+  <h1>剪刀石頭布</h1>
+  <p id="status">正在連線到伺服器...</p>
+
+  <div id="choices" style="margin-top: 20px;">
+    <button onclick="sendChoice('rock')">✊ 石頭</button>
+    <button onclick="sendChoice('paper')">✋ 布</button>
+    <button onclick="sendChoice('scissors')">✂️ 剪刀</button>
+  </div>
+
+  <p id="result" style="font-weight: bold; font-size: 20px;"></p>
+  <p id="score" style="font-weight: bold;">比分：0 - 0</p>
+
+  <script src="game.js"></script>
+</body>
+</html>
