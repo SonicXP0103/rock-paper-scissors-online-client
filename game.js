@@ -2,7 +2,26 @@ const statusEl = document.getElementById('status');
 const resultEl = document.getElementById('result');
 const scoreEl = document.getElementById('score');
 
-const socket = new WebSocket('ws://localhost:3000');
+//const socket = new WebSocket('ws://localhost:3000');
+// 建立 WebSocket（來自 config.js）
+let socket;
+try {
+  socket = new WebSocket(BACKEND_WS);
+} catch (e) {
+  console.error('WebSocket 建立失敗：', e);
+  statusEl.textContent = '無法建立 WebSocket，請檢查 BACKEND_WS';
+}
+
+function initGame()
+{
+  try {
+    socket = new WebSocket(BACKEND_WS);
+  } catch (e) {
+    console.error('WebSocket 建立失敗：', e);
+    statusEl.textContent = '無法建立 WebSocket，請檢查 BACKEND_WS';
+  }
+
+}
 
 function sendChoice(choice) {
   socket.send(JSON.stringify({ type: 'choice', choice }));
