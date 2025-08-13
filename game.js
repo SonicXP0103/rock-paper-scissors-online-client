@@ -20,7 +20,6 @@ function initGame()
     console.error('WebSocket 建立失敗：', e);
     statusEl.textContent = '無法建立 WebSocket，請檢查 BACKEND_WS';
   }
-
 }
 
 function sendChoice(choice) {
