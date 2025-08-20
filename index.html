@@ -17,6 +17,22 @@
   <p id="result" style="font-weight: bold; font-size: 20px;"></p>
   <p id="score" style="font-weight: bold;">比分：0 - 0</p>
 
+  <h2>對戰紀錄</h2>
+  <table id="historyTable" border="1" style="width:100%; text-align:center; border-collapse:collapse;">
+    <thead>
+      <tr>
+        <th>回合</th>
+        <th>你</th>
+        <th>對手</th>
+        <th>結果</th>
+      </tr>
+    </thead>
+    <tbody id="historyBody">
+      <!-- JS 會自動新增紀錄 -->
+    </tbody>
+  </table>
+
+
   <!-- config.js 先載入，裡面定義 BACKEND_WS -->
   <script src="config.js"></script>
   <script src="game.js"></script>

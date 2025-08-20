@@ -1,19 +1,12 @@
 const statusEl = document.getElementById('status');
 const resultEl = document.getElementById('result');
 const scoreEl = document.getElementById('score');
-
-//const socket = new WebSocket('ws://localhost:3000');
-// 建立 WebSocket（來自 config.js）
 let socket;
-try {
-  socket = new WebSocket(BACKEND_WS);
-} catch (e) {
-  console.error('WebSocket 建立失敗：', e);
-  statusEl.textContent = '無法建立 WebSocket，請檢查 BACKEND_WS';
-}
+let round = 0;
 
 function initGame()
 {
+  // 建立 WebSocket（來自 config.js）
   try {
     socket = new WebSocket(BACKEND_WS);
   } catch (e) {
@@ -40,7 +33,51 @@ function enableButtons(enable)
   }
 }
 
+function addHistory(playerMove, opponentMove, result)
+{
+  round++;
+  const historyBody = document.getElementById("historyBody");
+
+  const row = document.createElement("tr");
+
+  // 顏色強調結果
+  let resultText = "";
+  let color = "";
+  if (result === "win") {
+    resultText = "勝";
+    color = "green";
+  } else if (result === "lose") {
+    resultText = "敗";
+    color = "red";
+  } else {
+    resultText = "平";
+    color = "gray";
+  }
+
+  row.innerHTML = `
+    <td>${round}</td>
+    <td>${translateMove(playerMove)}</td>
+    <td>${translateMove(opponentMove)}</td>
+    <td style="color:${color}; font-weight:bold;">${resultText}</td>
+  `;
+
+  historyBody.appendChild(row);
+}
+
+// 小工具：轉換拳種
+function translateMove(move)
+{
+  switch (move) {
+    case "rock": return "✊";
+    case "paper": return "✋";
+    case "scissors": return "✌";
+    default: return move;
+  }
+}
+
 // ==============================
+
+initGame();
 
 socket.addEventListener('open', () => {
   console.log('✅ 已連線到伺服器');
@@ -61,11 +98,21 @@ socket.addEventListener('message', (event) => {
     scoreEl.textContent = '比分：0 - 0';
   }
 
-  if (data.type === 'result') {
+  if (data.type === 'result')
+  {
     resultEl.textContent = `結果：${data.message}`;
     if (data.score) {
       scoreEl.textContent = `比分：${data.score.self} - ${data.score.opponent}`;
     }
+
+    // 這裡新增呼叫 addHistory
+    addHistory(
+      data.selfChoice,     // 玩家出拳
+      data.opponentChoice, // 對手出拳
+      data.message.includes("贏") ? "win" :
+      data.message.includes("輸") ? "lose" : "draw"
+    );
+
     enableButtons(false);
   }
 
