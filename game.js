@@ -3,6 +3,7 @@ const resultEl = document.getElementById('result');
 const scoreEl = document.getElementById('score');
 let socket;
 let round = 0;
+let shouldClearHistory = false;
 
 function initGame()
 {
@@ -116,18 +117,30 @@ socket.addEventListener('message', (event) => {
     enableButtons(false);
   }
 
+  // 倒數計時
   if (data.type === 'countdown') {
     statusEl.textContent = data.message;
   }
 
-  if (data.type === 'next') {
-    statusEl.textContent = data.message;
-    enableButtons(true); // 讓按鈕可以按
-  }
-
-  if (data.type === 'gameover') {
+  if (data.type === 'gameover')
+  {
     alert(data.message);
     scoreEl.textContent = '比分：0 - 0';
+    shouldClearHistory = true; // 設定清除歷史紀錄的旗標
+  }
+
+  if (data.type === 'next')
+  {
+    statusEl.textContent = data.message;
+    enableButtons(true); // 讓按鈕可以按
+
+    // 清除歷史紀錄
+    if (shouldClearHistory)
+    {
+      document.getElementById("historyBody").innerHTML = "";
+      round = 0;
+      shouldClearHistory = false; // 重置旗標
+    }    
   }
 
 });
