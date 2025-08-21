@@ -3,15 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <title>剪刀石頭布 - 線上對戰</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>剪刀石頭布</h1>
   <p id="status">正在連線到伺服器...</p>
 
-  <div id="choices" style="margin-top: 20px;">
+  <!--按鈕模式出拳-->
+  <!-- <div id="choices" style="margin-top: 20px;">
     <button onclick="sendChoice('scissors')">✌ 剪刀</button>
     <button onclick="sendChoice('rock')">✊ 石頭</button>
     <button onclick="sendChoice('paper')">✋ 布</button>
+  </div> -->
+ 
+
+  <div id="choices">
+    <img src="img/Scissors.jpg" alt="剪刀" class="choice" data-choice="scissors">
+    <img src="img/Rock.jpg" alt="石頭" class="choice" data-choice="rock">
+    <img src="img/Paper.jpg" alt="布" class="choice" data-choice="paper">
   </div>
 
   <p id="result" style="font-weight: bold; font-size: 20px;"></p>
@@ -32,9 +41,9 @@
     </tbody>
   </table>
 
-
   <!-- config.js 先載入，裡面定義 BACKEND_WS -->
   <script src="config.js"></script>
   <script src="game.js"></script>
+
 </body>
 </html>

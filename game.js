@@ -28,10 +28,24 @@ function enableButtons(enable)
     button.disabled = !enable;
   });
   if (enable) {
-    statusEl.textContent = '請出拳！ ✊✋✌';
+    statusEl.textContent = '請出拳！ ✌✊✋';
   } else {
     statusEl.textContent = '等待對手出拳...';
   }
+}
+
+function enableChoices(enable) {
+  const choices = document.querySelectorAll('.choice');
+  choices.forEach(img => {
+    if (enable) {
+      img.style.pointerEvents = "auto"; // 可點
+      img.style.opacity = "1";
+    } else {
+      img.style.pointerEvents = "none"; // 禁止點擊
+      img.style.opacity = "0.5";
+    }
+  });
+  statusEl.textContent = enable ? '請選擇你的出拳 ✌✊✋' : '等待對手出拳...';
 }
 
 function addHistory(playerMove, opponentMove, result)
@@ -69,9 +83,9 @@ function addHistory(playerMove, opponentMove, result)
 function translateMove(move)
 {
   switch (move) {
+    case "scissors": return "✌";
     case "rock": return "✊";
     case "paper": return "✋";
-    case "scissors": return "✌";
     default: return move;
   }
 }
@@ -115,6 +129,7 @@ socket.addEventListener('message', (event) => {
     );
 
     enableButtons(false);
+    enableChoices(false); // 禁止點擊圖片
   }
 
   // 倒數計時
@@ -133,6 +148,7 @@ socket.addEventListener('message', (event) => {
   {
     statusEl.textContent = data.message;
     enableButtons(true); // 讓按鈕可以按
+    enableChoices(true); // 讓圖片可以點擊
 
     // 清除歷史紀錄
     if (shouldClearHistory)
@@ -147,4 +163,12 @@ socket.addEventListener('message', (event) => {
 
 socket.addEventListener('close', () => {
   statusEl.textContent = '❌ 與伺服器連線中斷';
+});
+
+document.querySelectorAll('.choice').forEach(img => {
+  img.addEventListener('click', () => {
+    const choice = img.dataset.choice; // 讀 data-choice
+    sendChoice(choice);
+    enableChoices(false); // 點完就不能再選
+  });
 });

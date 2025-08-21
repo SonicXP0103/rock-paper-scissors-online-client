@@ -1,0 +1,25 @@
+#choices {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.choice {
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  border: 3px solid transparent;
+  border-radius: 12px;
+  transition: 0.2s;
+}
+
+.choice:hover {
+  border-color: #666;
+  transform: scale(1.1);
+}
+
+.choice:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
